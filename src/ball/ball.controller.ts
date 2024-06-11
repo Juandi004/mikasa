@@ -1,8 +1,9 @@
 // ball.controller.ts
-
 import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
-import { Ball } from './ball.model';
 import { BallService } from './ball.service';
+import { Ball } from './ball.model';
+import { CreateBallDto } from './dto/create-ball.dto';
+import { UpdateBallDto } from './dto/update-ball.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 
 @Controller('balls')
@@ -28,20 +29,20 @@ export class BallController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new ball' })
-  @ApiBody({ type: Ball })
+  @ApiBody({ type: CreateBallDto })
   @ApiResponse({ status: 201, description: 'Ball created', type: Ball })
-  async create(@Body() data: Ball): Promise<Ball> {
-    return this.ballService.create(data);
+  async create(@Body() createBallDto: CreateBallDto): Promise<Ball> {
+    return this.ballService.create(createBallDto);
   }
 
   @Put(':id')
   @ApiOperation({ summary: 'Update a ball by ID' })
   @ApiParam({ name: 'id', type: 'number', description: 'ID of the ball' })
-  @ApiBody({ type: Ball })
+  @ApiBody({ type: UpdateBallDto })
   @ApiResponse({ status: 200, description: 'Ball updated', type: Ball })
   @ApiResponse({ status: 404, description: 'Ball not found' })
-  async update(@Param('id') id: string, @Body() data: Ball): Promise<Ball> {
-    return this.ballService.update(+id, data);
+  async update(@Param('id') id: string, @Body() updateBallDto: UpdateBallDto): Promise<Ball> {
+    return this.ballService.update(+id, updateBallDto);
   }
 
   @Delete(':id')
